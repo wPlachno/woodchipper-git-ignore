@@ -67,17 +67,19 @@ FLAG_VERBOSE = "-verbose"
 FLAG_CONFIG = "-config"
 FLAG_HELP = "-help"
 
-CL_DESC_HELP = (COLOR_SIBLING+"Welcome to "+COLOR_SUPER+"gignore.py"+COLOR_SIBLING+"!"+NL+
+CL_DESC_HELP = (NL+COLOR_SIBLING+"Welcome to "+COLOR_SUPER+"gignore.py"+COLOR_SIBLING+"!"+NL+
                 COLOR_DEFAULT+"This script is designed to allow command-line edits of "+
-                COLOR_SIBLING+".gitignore"+COLOR_DEFAULT+" files."+NL+
+                COLOR_SUPER+".gitignore"+COLOR_DEFAULT+" files."+NL+
                 COLOR_SUB+"It is highly suggested to set up an alias to launch this script "+
-                "as gignore or gig."+NL+
+                "as gignore or gig."+COLOR_DEFAULT+NL+
                 "Usage: "+NL+
-                COLOR_QUOTE+"gignore"+COLOR_DEFAULT+": Lists all nodes in your .gitignore file."+NL+
-                COLOR_QUOTE+"gignore -a \"[NODE]\""+COLOR_DEFAULT+": Adds the given node to your .gitignore file."+NL+
-                COLOR_QUOTE+"gignore -r \"[NODE]\""+COLOR_DEFAULT+": Removes the given node from your .gitignore file."+NL+
-                COLOR_QUOTE+"gignore -s \"[LANG]\""+COLOR_DEFAULT+": Sets up your .gitignore file and populates it with the standard nodes of the given language. If the language cannot be deciphered or is a language currently not supported, the .gitignore file will be created and populated only with the \".wcn*\" node."+NL+
-                COLOR_QUOTE+"gignore -c"+COLOR_DEFAULT+": Removes all nodes from your .gitignore file."+NL+
+                COLOR_QUOTE+"gignore"+COLOR_DEFAULT+": Lists all nodes in your "+CL_DESC_FILENAME+" file."+NL+
+                COLOR_QUOTE+"gignore -a \"[NODE]\""+COLOR_DEFAULT+": Adds the given node to your "+CL_DESC_FILENAME+" file."+NL+
+                COLOR_QUOTE+"gignore -r \"[NODE]\""+COLOR_DEFAULT+": Removes the given node from your "+CL_DESC_FILENAME+" file."+NL+
+                COLOR_QUOTE+"gignore -s \"[LANG]\""+COLOR_DEFAULT+": Sets up your "+CL_DESC_FILENAME+" file and populates it with the standard nodes of the given language. If the language cannot be deciphered or is a language currently not supported, the .gitignore file will be created and populated only with the \".wcn*\" node."+NL+
+                COLOR_QUOTE+"gignore -c"+COLOR_DEFAULT+": Removes all nodes from your "+CL_DESC_FILENAME+" file."+NL+
+                "Currently supported setup packages: "+NL+
+                "- "+COLOR_SIBLING+"Python"+COLOR_DEFAULT+NL+
                 "If you have any suggestions, feel free to send an email to the developer, Will, at "+COLOR_SUPER+"wjplachno@gmail.com"+COLOR_DEFAULT+NL)
 
 

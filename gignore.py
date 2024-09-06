@@ -62,11 +62,11 @@ class gignore_command_line:
             if setup_type in Nodes.setup_defaults:
                 targets = targets + Nodes.setup_defaults[setup_type]
 
-        gig_file = wcutil.WoodChipperFile(self.gig_path)
+        gig_file = wcutil.WoodchipperListFile(self.gig_path)
         gig_file.read()
         text = S.EMPTY
         for node in targets:
-            gig_file.append_line(node)
+            gig_file.add(node)
             text = text + CL_DESC_NODE_ADDED.format(node)
         gig_file.write()
         return text
@@ -92,22 +92,22 @@ class gignore_command_line:
         if not gig_file.exists():
             return S.CL_DESC_FILE_DOES_NOT_EXIST
         gig_file.read()
-        gig_file.text = list(())
+        gig_file.clear()
         gig_file.write()
         return S.CL_DESC_FILE_HAS_BEEN_CLEARED
 
     def _run_add(self):
-        gig_file = wcutil.WoodChipperFile(self.gig_path)
+        gig_file = wcutil.WoodchipperListFile(self.gig_path)
         gig_file.read()
         text = S.EMPTY
         for node in self.target:
-            gig_file.append_line(node)
+            gig_file.add(node)
             text = text + S.CL_DESC_NODE_ADDED.format(node)
         gig_file.write()
         return text
 
     def _run_remove(self):
-        gig_file = wcutil.WoodChipperFile(self.gig_path, False)
+        gig_file = wcutil.WoodchipperListFile(self.gig_path, False)
         if not gig_file.exists():
             return S.CL_DESC_FILE_DOES_NOT_EXIST
         gig_file.read()
@@ -118,8 +118,10 @@ class gignore_command_line:
         self.dbg("Targets: "+S.NL)
         for node in self.target:
             self.dbg("- "+node)
-            gig_file.text.remove(node)
-            text = text + S.CL_DESC_NODE_REMOVED.format(node)
+            if gig_file.remove(node):
+                text = text + S.CL_DESC_NODE_REMOVED.format(node)
+            else:
+                text = text + S.CL_DESC_NODE_DOES_NOT_EXIST.format(node)
         gig_file.write()
         return text
 

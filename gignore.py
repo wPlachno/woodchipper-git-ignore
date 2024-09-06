@@ -107,7 +107,21 @@ class gignore_command_line:
         return text
 
     def _run_remove(self):
-        return S.CL_DESC_UNIMPLEMENTED
+        gig_file = wcutil.WoodChipperFile(self.gig_path, False)
+        if not gig_file.exists():
+            return S.CL_DESC_FILE_DOES_NOT_EXIST
+        gig_file.read()
+        self.dbg("Nodes in file: "+S.NL)
+        for node in gig_file.text:
+            self.dbg("- "+node)
+        text = S.EMPTY
+        self.dbg("Targets: "+S.NL)
+        for node in self.target:
+            self.dbg("- "+node)
+            gig_file.text.remove(node)
+            text = text + S.CL_DESC_NODE_REMOVED.format(node)
+        gig_file.write()
+        return text
 
     def _run_config(self):
         return S.CL_DESC_UNIMPLEMENTED

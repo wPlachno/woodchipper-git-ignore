@@ -79,7 +79,7 @@ class gignore_command_line:
         if len(gig_file.text) == 0:
             return S.CL_DESC_FILE_IS_EMPTY
 
-        list = S.CL_DESC_NODE_LIST
+        list = S.CL_DESC_FILE_CONTAINS
         for rawLine in gig_file.text:
             line = rawLine
             if line[-1] == '\n':

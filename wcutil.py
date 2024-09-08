@@ -198,7 +198,7 @@ class WoodChipperFile:
                 text_file.write(text_line)
 
     def clear(self):
-        self.text.clear()
+        self.text = list (())
 
     def append_line(self, text):
         fixed_text = text
@@ -224,42 +224,6 @@ class WoodChipperFile:
     def __str__(self):
         return self.name + " (" + self.path + "): " + len(self.text) + " items"
 
-class WoodchipperListFile(WoodChipperFile):
-    def __init__(self, file_path, auto_create=True, unique=True):
-        WoodChipperFile.__init__(self, file_path, auto_create)
-        self.unique = unique
-
-    def __getitem__(self, item):
-        return self.text[item][:-1]
-
-    def __setitem__(self, key, value):
-        self.text[key] = str(value) + "\n"
-
-    def  __contains__(self, item):
-        text = str(item)+'\n'
-        return text in self.text
-
-    def __len__(self):
-        return len(self.text)
-
-    def __str__(self):
-        text = ""
-        for line in self.text:
-            text = text + (line[:-1]+', ')
-        return text[:-2]
-
-    def add(self, value):
-        text = str(value)+'\n'
-        if (not self.unique) or (text not in self.text):
-            self.text.append(text)
-            return True
-        return False
-
-    def remove(self, value):
-        text = str(value)+'\n'
-        found = text in self.text
-        self.text.remove(text)
-        return found
 
 class WoodchipperSettingsFile:
     def __init__(self):
@@ -339,24 +303,47 @@ def bool_from_user(raw_text:str):
     return False
 
 
-def decipher_command_line(arguments, flags):
+def decipher_command_line(arguments, flags: FlagFarm):
     """
-    Gets the target directory paths, either as a command line argument
-    or the working directory. Also deciphers the rest of the command
-    line arguments for flags like VERBOSE and HISTORY
-    :return: A list of directory paths
+    Deciphers the command line by parsing through arguments,
+    affecting FlagFarm flags with each one, and adding it to
+    a return value array if it does not match a flag.
+    :return: A list of command line targets
     """
     # Decipher the command line arguments
-    target_directories = []
+    targets = []
     for cl_argument in arguments[1:]:
-        arg_as_flag = cl_argument.upper()
+        arg_as_flag = cl_argument.lower()
         if flags.has_flag(arg_as_flag):
             flags.activate(arg_as_flag)
         else:
-            target_directories.append(cl_argument)
-    if len(target_directories) < 1:
-        target_directories.append(pathlib.Path().resolve())
-    return target_directories
+            targets.append(cl_argument)
+    return targets
+
+def convert_to_array(target):
+    """
+    Takes whatever is passed in and returns it inside
+    of a list, unless it was already a list.
+    :param target: anything
+    :return: target inside a list or target if target is already a list.
+    """
+    if target.__class__ is list:
+        return target
+    return [target]
+
+def process_str_array_new_lines(target):
+    """
+    Given a list of strings, breaks up each new line
+    into two separate strings
+    :param target: A list of strings
+    :return: a list of more strings with no new lines
+    """
+    newLines = list(())
+    for _string in target:
+        for line in _string.split('\n'):
+            if len(line) > 0:
+                newLines.append(line)
+    return newLines
 
 
 def run_on_sorted_list(target_list, function_given_item):
